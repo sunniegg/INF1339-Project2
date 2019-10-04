@@ -1,51 +1,41 @@
-<html>
+  
+  <html>
     <head>
+        <style>
+            .output {color: chartreuse;}
+        </style>
+        <!-- LOAD p5.js library so we can use a few of its tools -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
         <script>
-            function getAPIkey_and_go() {
-                var APIkey = document.getElementById('myAPIkey').value 
-                //document.getElementById('temporary_output_text').innerHTML = APIkey
-                
-                
-                var url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=rainbow&begin_date=20190901&end_date=20190930&api-key='+APIkey
-                //createCanvas(400, 400);
-                loadJSON(url, gotData)
-                
-                
-            }
-            function myNYTapp(){
-                var APIkey = 'iGRJBxHl5BzZ4Cs6AjByeQ6lVpflBOxg'
-            }
-            function setup(){
-                noCanvas()
+            
+            //STORE some data in "global" variables known to all functions
+            var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=rainbow&api-key=iGRJBxHl5BzZ4Cs6AjByeQ6lVpflBOxg";
+            var articleCount = 0
+            
+            //SETUP is a standard way P5 starts a script.
+            function setup() {
+              //P5 usually used for drawing    
+              noCanvas();
+              //SEND the URL and when the data comes back, run the function "gotData"    
+              loadJSON(url, gotData);
             }
             
+            //gotDATA for now just announces itself 
             function gotData(data) {
-                sample_data = data.response.docs[0].headline.main
-                document.getElementById('temporary_output_text').innerHTML = sample_data
-                document.getElementById('article_count').innerHTML = data.response.docs.length
-                display_headline (sample_data)
-                sample_data = data.response.docs[1].headline.main
-                display_headline (sample_data)
-                window.alert('that is all, folks')
-            }
-            function display_headline (headline_text) {
-                var heading = document.createElement('h3')
-                  heading.innerHTML = headline_text
-                document.body.insertBefore(heading,document.getElementById(temporary_output_text))
-            }
-            function draw() { 
-                //background(220);
-                //ellipse(50, 50, 80, 80);
-            }
-        </script>
+                //alert("FUNCTION GOT DATA ACTIVATED")
+                var text =''
+                for (i=0; i < data.response.docs.length; i++) {
+                    text = text + '<br />' + data.response.docs[i].headline.main
+                }
+                document.getElementById("test_output").innerHTML = text
+               }
+           </script>
     </head>
     <body>
-        <h3>Get User Input</h3>
-        <input type="text" id="myAPIkey" value="your API key">
-        <button type="button" onclick="getAPIkey_and_go()">Get API key & GO</button> 
-        <p id="temporary_output_text"></p>
-        <p>Article count = <span id='article_count'></span></p>
-        
-    </body>
+        <h1>New York Times API: Articles from all time about rainbows</h1>
+        <!--a <P> (paragraph) element we will use for output-->
+        <!--it's name is "test_output" and it is styled by the class "output"-->
+        <p id="test_output" class="output"></p>
+
+      </body>
 </html>
