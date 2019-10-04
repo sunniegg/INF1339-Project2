@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+        <script>
+            function getAPIkey_and_go() {
+                var APIkey = document.getElementById('myAPIkey').value 
+                //document.getElementById('temporary_output_text').innerHTML = APIkey
+                
+                
+                var url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=rainbow&begin_date=20190901&end_date=20190930&api-key='+APIkey
+                //createCanvas(400, 400);
+                loadJSON(url, gotData)
+                
+                
+            }
+            function myNYTapp(){
+                var APIkey = 'iGRJBxHl5BzZ4Cs6AjByeQ6lVpflBOxg'
+            }
+            function setup(){
+                noCanvas()
+            }
+            
+            function gotData(data) {
+                sample_data = data.response.docs[0].headline.main
+                document.getElementById('temporary_output_text').innerHTML = sample_data
+                document.getElementById('article_count').innerHTML = data.response.docs.length
+                display_headline (sample_data)
+                sample_data = data.response.docs[1].headline.main
+                display_headline (sample_data)
+                window.alert('that is all, folks')
+            }
+            function display_headline (headline_text) {
+                var heading = document.createElement('h3')
+                  heading.innerHTML = headline_text
+                document.body.insertBefore(heading,document.getElementById(temporary_output_text))
+            }
+            function draw() { 
+                //background(220);
+                //ellipse(50, 50, 80, 80);
+            }
+        </script>
+    </head>
+    <body>
+        <h3>Get User Input</h3>
+        <input type="text" id="myAPIkey" value="your API key">
+        <button type="button" onclick="getAPIkey_and_go()">Get API key & GO</button> 
+        <p id="temporary_output_text"></p>
+        <p>Article count = <span id='article_count'></span></p>
+        
+    </body>
+</html>
